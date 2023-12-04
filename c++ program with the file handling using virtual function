@@ -1,0 +1,84 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+
+// Base class
+class FileHandler {
+public:
+    virtual void writeFile(const std::string& filename) = 0; // Pure virtual function for writing to a file
+    virtual void readFile(const std::string& filename) = 0; // Pure virtual function for reading from a file
+};
+
+// Derived class - TextFileHandler
+class TextFileHandler : public FileHandler {
+public:
+    void writeFile(const std::string& filename) override {
+        std::ofstream file(filename);
+        if (file.is_open()) {
+            file << "This is a text file." << std::endl;
+            file.close();
+            std::cout << "Text data written to file: " << filename << std::endl;
+        } else {
+            std::cout << "Unable to open file: " << filename << std::endl;
+        }
+    }
+
+    void readFile(const std::string& filename) override {
+        std::ifstream file(filename);
+        if (file.is_open()) {
+            std::string line;
+            std::cout << "Contents of text file " << filename << ":" << std::endl;
+            while (getline(file, line)) {
+                std::cout << line << std::endl;
+            }
+            file.close();
+        } else {
+            std::cout << "Unable to open file: " << filename << std::endl;
+        }
+    }
+};
+
+// Derived class - BinaryFileHandler
+class BinaryFileHandler : public FileHandler {
+public:
+    void writeFile(const std::string& filename) override {
+        std::ofstream file(filename, std::ios::binary);
+        if (file.is_open()) {
+            int data[] = {10, 20, 30, 40, 50};
+            file.write(reinterpret_cast<const char*>(data), sizeof(data));
+            file.close();
+            std::cout << "Binary data written to file: " << filename << std::endl;
+        } else {
+            std::cout << "Unable to open file: " << filename << std::endl;
+        }
+    }
+
+    void readFile(const std::string& filename) override {
+        std::ifstream file(filename, std::ios::binary);
+        if (file.is_open()) {
+            int data[5];
+            file.read(reinterpret_cast<char*>(data), sizeof(data));
+            std::cout << "Contents of binary file " << filename << ":" << std::endl;
+            for (int i = 0; i < 5; ++i) {
+                std::cout << data[i] << " ";
+            }
+            std::cout << std::endl;
+            file.close();
+        } else {
+            std::cout << "Unable to open file: " << filename << std::endl;
+        }
+    }
+};
+
+int main() {
+    TextFileHandler textHandler;
+    BinaryFileHandler binaryHandler;
+
+    textHandler.writeFile("text_file.txt");
+    textHandler.readFile("text_file.txt");
+
+    binaryHandler.writeFile("binary_file.bin");
+    binaryHandler.readFile("binary_file.bin");
+
+    return 0;
+}
