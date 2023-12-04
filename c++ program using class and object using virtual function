@@ -1,0 +1,51 @@
+#include <iostream>
+
+// Base class
+class Shape {
+public:
+    virtual void displayArea() const = 0; // Virtual function to display area
+};
+
+// Derived class for Circle
+class Circle : public Shape {
+private:
+    double radius;
+
+public:
+    Circle(double r) : radius(r) {}
+
+    void displayArea() const override {
+        double area = 3.14159 * radius * radius; // Area of a circle formula
+        std::cout << "Area of the circle with radius " << radius << " is: " << area << std::endl;
+    }
+};
+
+// Derived class for Rectangle
+class Rectangle : public Shape {
+private:
+    double length;
+    double width;
+
+public:
+    Rectangle(double l, double w) : length(l), width(w) {}
+
+    void displayArea() const override {
+        double area = length * width; // Area of a rectangle formula
+        std::cout << "Area of the rectangle with length " << length << " and width " << width << " is: " << area << std::endl;
+    }
+};
+
+int main() {
+    // Creating objects of Circle and Rectangle classes
+    Circle circleObj(5.0);
+    Rectangle rectangleObj(4.0, 6.0);
+
+    // Using virtual functions through base class pointers
+    Shape* shapePtr1 = &circleObj;
+    Shape* shapePtr2 = &rectangleObj;
+
+    shapePtr1->displayArea(); // Display area of the circle
+    shapePtr2->displayArea(); // Display area of the rectangle
+
+    return 0;
+}
