@@ -1,0 +1,62 @@
+#include <iostream>
+#include <cmath>
+
+const double PI = 3.14159;
+
+class Shape {
+public:
+    virtual double calculateVolume() const = 0; // Virtual function to calculate volume
+};
+
+class Cube : public Shape {
+private:
+    double side;
+
+public:
+    Cube(double s) : side(s) {}
+
+    double calculateVolume() const override {
+        return side * side * side; // Volume of a cube formula
+    }
+};
+
+class Cuboid : public Shape {
+private:
+    double length;
+    double width;
+    double height;
+
+public:
+    Cuboid(double l, double w, double h) : length(l), width(w), height(h) {}
+
+    double calculateVolume() const override {
+        return length * width * height; // Volume of a cuboid formula
+    }
+};
+
+class Cylinder : public Shape {
+private:
+    double radius;
+    double height;
+
+public:
+    Cylinder(double r, double h) : radius(r), height(h) {}
+
+    double calculateVolume() const override {
+        return PI * pow(radius, 2) * height; // Volume of a cylinder formula
+    }
+};
+
+int main() {
+    Cube cube(5.0);
+    Cuboid cuboid(4.0, 6.0, 3.0);
+    Cylinder cylinder(2.5, 7.0);
+
+    Shape* shapes[] = { &cube, &cuboid, &cylinder };
+
+    for (const auto& shape : shapes) {
+        std::cout << "Volume: " << shape->calculateVolume() << std::endl;
+    }
+
+    return 0;
+}
