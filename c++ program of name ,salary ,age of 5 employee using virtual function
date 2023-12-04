@@ -1,0 +1,53 @@
+#include <iostream>
+#include <string>
+
+const int MAX_EMPLOYEES = 5;
+
+class Employee {
+protected:
+    std::string name;
+    double salary;
+    int age;
+
+public:
+    Employee(const std::string& n, double s, int a) : name(n), salary(s), age(a) {}
+
+    virtual void displayDetails() const {
+        std::cout << "Name: " << name << ", Salary: " << salary << ", Age: " << age << std::endl;
+    }
+};
+
+class EmployeeManagement {
+private:
+    Employee* employees[MAX_EMPLOYEES];
+
+public:
+    EmployeeManagement() {
+        // Initializing with default values
+        employees[0] = new Employee("John", 50000, 30);
+        employees[1] = new Employee("Alice", 60000, 28);
+        employees[2] = new Employee("Bob", 55000, 35);
+        employees[3] = new Employee("Emily", 52000, 32);
+        employees[4] = new Employee("David", 48000, 27);
+    }
+
+    void displayAllDetails() const {
+        std::cout << "Details of Employees:" << std::endl;
+        for (int i = 0; i < MAX_EMPLOYEES; ++i) {
+            employees[i]->displayDetails();
+        }
+    }
+
+    ~EmployeeManagement() {
+        for (int i = 0; i < MAX_EMPLOYEES; ++i) {
+            delete employees[i];
+        }
+    }
+};
+
+int main() {
+    EmployeeManagement empManager;
+    empManager.displayAllDetails();
+
+    return 0;
+}
