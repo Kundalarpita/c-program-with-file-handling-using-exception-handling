@@ -1,0 +1,76 @@
+#include <iostream>
+
+// Base class
+class Base {
+public:
+    virtual void swap(Base* other) = 0; // Virtual function for swapping
+};
+
+// Derived class 1
+class ClassA : public Base {
+private:
+    int dataA;
+
+public:
+    ClassA(int a) : dataA(a) {}
+
+    void swap(Base* other) override {
+        // Check if 'other' is an object of ClassA
+        ClassA* objA = dynamic_cast<ClassA*>(other);
+        if (objA) {
+            std::swap(dataA, objA->dataA);
+            std::cout << "Swapped objects of ClassA successfully." << std::endl;
+        } else {
+            std::cout << "Cannot swap different types of objects." << std::endl;
+        }
+    }
+
+    void displayData() const {
+        std::cout << "Data in ClassA: " << dataA << std::endl;
+    }
+};
+
+// Derived class 2
+class ClassB : public Base {
+private:
+    double dataB;
+
+public:
+    ClassB(double b) : dataB(b) {}
+
+    void swap(Base* other) override {
+        // Check if 'other' is an object of ClassB
+        ClassB* objB = dynamic_cast<ClassB*>(other);
+        if (objB) {
+            std::swap(dataB, objB->dataB);
+            std::cout << "Swapped objects of ClassB successfully." << std::endl;
+        } else {
+            std::cout << "Cannot swap different types of objects." << std::endl;
+        }
+    }
+
+    void displayData() const {
+        std::cout << "Data in ClassB: " << dataB << std::endl;
+    }
+};
+
+int main() {
+    ClassA objA1(10);
+    ClassA objA2(20);
+    ClassB objB(3.14);
+
+    objA1.displayData(); // Display initial data in objA1
+    objA2.displayData(); // Display initial data in objA2
+    objB.displayData();  // Display initial data in objB
+
+    // Attempt swapping between objects of different classes
+    objA1.swap(&objA2); // Swap objects of ClassA
+    objA1.displayData(); // Display data after swapping in objA1
+    objA2.displayData(); // Display data after swapping in objA2
+
+    objA1.swap(&objB); // Attempt swapping between objects of different classes (objA1 and objB)
+    objA1.displayData(); // Display data in objA1 after the attempted swapping
+
+    return 0;
+}
+
